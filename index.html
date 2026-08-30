@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>AFFiNE Backup Extractor</title>
+<title>AFFiNE Vault Extractor</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
 <style>
@@ -32,7 +32,6 @@
     flex-direction: column;
     align-items: center;
     padding: 48px 24px 80px;
-    /* subtle grid */
     background-image:
       linear-gradient(var(--border) 1px, transparent 1px),
       linear-gradient(90deg, var(--border) 1px, transparent 1px);
@@ -40,13 +39,8 @@
     background-position: center center;
   }
 
-  /* ── header ── */
-  .header {
-    text-align: center;
-    margin-bottom: 56px;
-  }
+  .header { text-align: center; margin-bottom: 48px; }
   .header .eyebrow {
-    font-family: var(--mono);
     font-size: 11px;
     letter-spacing: .2em;
     text-transform: uppercase;
@@ -55,11 +49,10 @@
   }
   .header h1 {
     font-family: var(--sans);
-    font-size: clamp(2rem, 5vw, 3.4rem);
+    font-size: clamp(2rem, 5vw, 3.2rem);
     font-weight: 800;
     letter-spacing: -.02em;
     line-height: 1.05;
-    color: var(--text);
   }
   .header h1 span { color: var(--accent); }
   .header p {
@@ -67,18 +60,17 @@
     color: var(--text-dim);
     font-size: 13px;
     line-height: 1.7;
-    max-width: 520px;
+    max-width: 580px;
     margin-inline: auto;
   }
 
-  /* ── card ── */
   .card {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: 32px;
     width: 100%;
-    max-width: 680px;
+    max-width: 720px;
     margin-bottom: 20px;
   }
   .card-label {
@@ -89,7 +81,6 @@
     margin-bottom: 16px;
   }
 
-  /* ── drop zone ── */
   .dropzone {
     border: 1.5px dashed var(--muted);
     border-radius: var(--radius);
@@ -106,11 +97,7 @@
   .dropzone input[type="file"] {
     position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
   }
-  .dropzone .dz-icon {
-    font-size: 32px;
-    margin-bottom: 12px;
-    display: block;
-  }
+  .dropzone .dz-icon { font-size: 32px; margin-bottom: 12px; display: block; }
   .dropzone .dz-title {
     font-family: var(--sans);
     font-weight: 700;
@@ -118,17 +105,8 @@
     color: var(--text);
     margin-bottom: 6px;
   }
-  .dropzone .dz-sub {
-    font-size: 11px;
-    color: var(--text-dim);
-    line-height: 1.6;
-  }
-  .dropzone .dz-sub code {
-    color: var(--accent2);
-    background: rgba(61,255,208,.08);
-    padding: 1px 5px;
-    border-radius: 3px;
-  }
+  .dropzone .dz-sub { font-size: 11px; color: var(--text-dim); line-height: 1.6; }
+
   .file-selected {
     margin-top: 12px;
     padding: 10px 14px;
@@ -138,31 +116,9 @@
     font-size: 12px;
     color: var(--accent);
     display: none;
-    text-align: left;
     word-break: break-all;
   }
 
-  /* ── path hint ── */
-  .path-hint {
-    margin-top: 16px;
-    padding: 14px 16px;
-    background: rgba(255,255,255,.02);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    font-size: 11px;
-    color: var(--text-dim);
-    line-height: 1.8;
-  }
-  .path-hint strong { color: var(--text); }
-  .path-hint code {
-    color: var(--accent2);
-    background: rgba(61,255,208,.07);
-    padding: 1px 5px;
-    border-radius: 3px;
-    font-size: 10.5px;
-  }
-
-  /* ── button ── */
   .btn {
     display: inline-flex;
     align-items: center;
@@ -184,12 +140,7 @@
   .btn:hover:not(:disabled) { opacity: .88; transform: translateY(-1px); }
   .btn:disabled { opacity: .35; cursor: not-allowed; transform: none; }
 
-  /* ── log ── */
-  .log-wrap {
-    display: none;
-    flex-direction: column;
-    gap: 0;
-  }
+  .log-wrap { display: none; flex-direction: column; max-height: 240px; overflow-y: auto; }
   .log-wrap.visible { display: flex; }
   .log-line {
     font-size: 11.5px;
@@ -198,9 +149,7 @@
     display: flex;
     gap: 12px;
     align-items: baseline;
-    animation: fadeIn .2s ease;
   }
-  @keyframes fadeIn { from { opacity:0; transform: translateY(3px); } to { opacity:1; transform: none; } }
   .log-line .log-time { color: var(--muted); font-size: 10px; flex-shrink: 0; }
   .log-line .log-msg  { color: var(--text-dim); }
   .log-line.ok   .log-msg { color: var(--accent); }
@@ -208,10 +157,7 @@
   .log-line.err  .log-msg { color: #ff6b6b; }
   .log-line.info .log-msg { color: var(--accent2); }
 
-  /* ── results ── */
-  .results {
-    display: none;
-  }
+  .results { display: none; }
   .results.visible { display: block; }
 
   .stat-row {
@@ -229,7 +175,7 @@
   }
   .stat .n {
     font-family: var(--sans);
-    font-size: 28px;
+    font-size: 26px;
     font-weight: 800;
     color: var(--accent);
     line-height: 1;
@@ -241,13 +187,12 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-    max-height: 320px;
+    max-height: 360px;
     overflow-y: auto;
     padding-right: 4px;
     margin-bottom: 24px;
   }
   .doc-list::-webkit-scrollbar { width: 4px; }
-  .doc-list::-webkit-scrollbar-track { background: transparent; }
   .doc-list::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 2px; }
 
   .doc-item {
@@ -259,28 +204,23 @@
     justify-content: space-between;
     align-items: center;
     gap: 12px;
-    cursor: pointer;
-    transition: border-color .15s;
   }
-  .doc-item:hover { border-color: var(--accent); }
-  .doc-item .doc-title {
+  .doc-item-title {
     font-size: 12px;
     color: var(--text);
-    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    flex: 1;
+    white-space: nowrap;
   }
-  .doc-item .doc-chars {
-    font-size: 10px;
-    color: var(--text-dim);
-    flex-shrink: 0;
-  }
-  .doc-item .doc-dl {
-    font-size: 10px;
+  .doc-item-folder {
+    font-size: 10.5px;
     color: var(--accent2);
-    flex-shrink: 0;
+    background: rgba(61,255,208,.08);
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-right: 8px;
   }
+  .doc-chars { font-size: 10px; color: var(--text-dim); flex-shrink: 0; }
 
   .btn-dl-all {
     background: transparent;
@@ -289,88 +229,47 @@
   }
   .btn-dl-all:hover:not(:disabled) { background: rgba(127,255,110,.08); }
 
-  /* ── footer ── */
-  footer {
-    margin-top: 48px;
-    font-size: 11px;
-    color: var(--muted);
-    text-align: center;
-    line-height: 1.8;
-  }
-  footer a { color: var(--text-dim); text-decoration: none; }
-  footer a:hover { color: var(--accent2); }
-
-  /* ── schema badge ── */
-  .schema-badge {
-    display: inline-block;
-    font-size: 10px;
-    padding: 2px 7px;
-    border-radius: 20px;
-    margin-left: 8px;
-    background: rgba(61,255,208,.1);
-    color: var(--accent2);
-    border: 1px solid rgba(61,255,208,.2);
-    vertical-align: middle;
-  }
+  footer { margin-top: 48px; font-size: 11px; color: var(--muted); text-align: center; }
 </style>
 </head>
 <body>
 
 <div class="header">
-  <div class="eyebrow">Open Source Tool</div>
-  <h1>AFFiNE <span>Extractor</span></h1>
-  <p>Upload your <code style="color:var(--accent2);background:rgba(61,255,208,.08);padding:1px 6px;border-radius:3px;font-size:12px">.affine</code> backup export. Deserializes every note from its Yjs CRDT encoding and downloads clean Markdown files. Runs entirely in your browser — nothing leaves your machine.</p>
+  <div class="eyebrow">Local Parser</div>
+  <h1>AFFiNE <span>Vault Extractor</span></h1>
+  <p>Deserializes notes and nested folder hierarchies directly from your <code style="color:var(--accent2)">.affine</code> SQLite backup into an organized Obsidian folder tree.</p>
 </div>
 
-<!-- Upload card -->
 <div class="card">
-  <div class="card-label">01 — Upload File</div>
+  <div class="card-label">01 — Select SQLite Backup</div>
   <div class="dropzone" id="dropzone">
-    <input type="file" id="fileInput" accept=".affine" />
-    <span class="dz-icon">⬡</span>
+    <input type="file" id="fileInput" accept=".affine,.db,.sqlite" />
+    <span class="dz-icon">📁</span>
     <div class="dz-title">Drop your .affine backup here or click to browse</div>
-    <div class="dz-sub">
-      AFFiNE desktop → click your workspace name → <code>Settings</code> → <code>Export</code> → saves a <code>.affine</code> file
-    </div>
+    <div class="dz-sub">Reads notes, tags, and sidebar folder structures completely offline.</div>
   </div>
   <div class="file-selected" id="fileSelected"></div>
-
-  <div class="path-hint">
-    <strong>How to export from AFFiNE:</strong><br />
-    Open the desktop app → click your workspace avatar (top-left) → <code>Settings</code> → scroll to <strong>Storage &amp; Export</strong> → <code>Export</code>.<br /><br />
-    The saved <code>.affine</code> file is a raw SQLite database. Drop it above and this tool will deserialize every note from its Yjs binary encoding into plain Markdown.
-  </div>
-
-  <button class="btn" id="runBtn" disabled>Extract Notes →</button>
+  <button class="btn" id="runBtn" disabled>Extract Folders &amp; Notes →</button>
 </div>
 
-<!-- Log card -->
 <div class="card" id="logCard" style="display:none">
-  <div class="card-label">02 — Processing</div>
+  <div class="card-label">02 — Processing Log</div>
   <div class="log-wrap visible" id="logWrap"></div>
 </div>
 
-<!-- Results card -->
 <div class="card results" id="resultsCard">
-  <div class="card-label">03 — Results</div>
+  <div class="card-label">03 — Vault Export</div>
   <div class="stat-row" id="statRow"></div>
   <div class="doc-list" id="docList"></div>
-  <button class="btn btn-dl-all" id="dlAllBtn">⬇ Download All as ZIP</button>
+  <button class="btn btn-dl-all" id="dlAllBtn">⬇ Download Obsidian Vault (.zip)</button>
 </div>
 
-<footer>
-  All processing is local. Zero network requests for your data.<br />
-  <a href="https://github.com/toeverything/AFFiNE" target="_blank">AFFiNE</a> ·
-  Built with sql.js (SQLite WASM) + yjs · No data leaves your machine
-</footer>
+<footer>All processing is executed in-browser using WASM. Zero network requests.</footer>
 
-<!-- CDN deps loaded dynamically to keep the file self-contained -->
 <script>
-// ── State ─────────────────────────────────────────────────────────────────────
 let selectedFile = null;
-let extractedDocs = []; // [{title, content, docId}]
+let extractedDocs = []; // [{title, content, folderPath, docId}]
 
-// ── UI helpers ────────────────────────────────────────────────────────────────
 const $ = id => document.getElementById(id);
 
 function log(msg, type = 'default') {
@@ -384,7 +283,6 @@ function log(msg, type = 'default') {
   wrap.scrollTop = wrap.scrollHeight;
 }
 
-// ── File input ────────────────────────────────────────────────────────────────
 const dz = $('dropzone');
 const fi = $('fileInput');
 
@@ -401,11 +299,10 @@ function setFile(f) {
   selectedFile = f;
   const sel = $('fileSelected');
   sel.style.display = 'block';
-  sel.textContent = `✓ ${f.name}  (${(f.size/1024).toFixed(1)} KB)`;
+  sel.textContent = `✓ ${f.name} (${(f.size/1024).toFixed(1)} KB)`;
   $('runBtn').disabled = false;
 }
 
-// ── Load deps lazily ──────────────────────────────────────────────────────────
 function loadScript(src) {
   return new Promise((res, rej) => {
     if (document.querySelector(`script[src="${src}"]`)) { res(); return; }
@@ -415,29 +312,85 @@ function loadScript(src) {
   });
 }
 
-// Load Yjs: try UMD CDN first, fall back to ESM dynamic import
 async function loadYjs() {
-  // Try UMD build (sets window.Y)
   try {
     await loadScript('https://cdn.jsdelivr.net/npm/yjs@13.6.30/dist/yjs.js');
-    if (window.Y || window.yjs) {
-      log(`Yjs loaded via CDN (UMD)`, 'ok');
-      return;
-    }
+    if (window.Y || window.yjs) return;
   } catch (_) {}
-
-  // Fallback: dynamic ESM import via esm.sh, assign to window.Y
-  try {
-    const mod = await import('https://esm.sh/yjs@13.6.30');
-    window.Y = mod;
-    log('Yjs loaded via ESM import', 'ok');
-    return;
-  } catch (_) {}
-
-  throw new Error('Failed to load Yjs from CDN and ESM fallback. Check your internet connection.');
+  const mod = await import('https://esm.sh/yjs@13.6.30');
+  window.Y = mod;
 }
 
-// ── Main run ──────────────────────────────────────────────────────────────────
+function toUint8Array(val) {
+  if (val instanceof Uint8Array) return val;
+  if (val instanceof ArrayBuffer) return new Uint8Array(val);
+  return new Uint8Array(val || []);
+}
+
+function sanitizeName(name) {
+  return (name || '').trim().replace(/[/\\?%*:|"<>#^[\]]/g, '-');
+}
+
+// Parses document CRDT blocks into clean Markdown
+function parseDocToMarkdown(uint8, Y) {
+  try {
+    const ydoc = new Y.Doc();
+    Y.applyUpdate(ydoc, uint8);
+
+    let title = '';
+    const lines = [];
+    const blocksMap = ydoc.getMap('blocks');
+
+    if (blocksMap.size > 0) {
+      const sortedBlocks = [];
+      blocksMap.forEach((block) => {
+        if (!(block instanceof Y.Map)) return;
+        const flavour = block.get('sys:flavour') || '';
+        const idx = block.get('sys:index') || '0';
+
+        if (flavour === 'affine:page') {
+          const titleObj = block.get('prop:title');
+          title = titleObj instanceof Y.Text ? titleObj.toString().trim() : (typeof titleObj === 'string' ? titleObj.trim() : '');
+        }
+
+        const textObj = block.get('prop:text');
+        const text = textObj instanceof Y.Text ? textObj.toString().trim() : '';
+        const propType = block.get('prop:type') || '';
+
+        if (text) sortedBlocks.push({ flavour, text, idx, propType });
+      });
+
+      sortedBlocks.sort((a, b) => String(a.idx).localeCompare(String(b.idx)));
+
+      if (title) lines.push(`# ${title}\n`);
+      for (const b of sortedBlocks) {
+        if (b.propType === 'h1') lines.push(`## ${b.text}`);
+        else if (b.propType === 'h2') lines.push(`### ${b.text}`);
+        else if (b.propType === 'h3') lines.push(`#### ${b.text}`);
+        else if (b.flavour === 'affine:code') lines.push('```\n' + b.text + '\n```');
+        else lines.push(b.text);
+      }
+    }
+
+    if (lines.length === 0) {
+      ydoc.share.forEach((type) => {
+        if (type instanceof Y.Text) {
+          const t = type.toString().trim();
+          if (t) lines.push(t);
+        }
+      });
+    }
+
+    if (!title && lines.length > 0) {
+      title = lines[0].replace(/^#+\s*/, '').slice(0, 60).trim();
+    }
+
+    return { title: title || '', text: lines.join('\n\n') };
+  } catch (e) {
+    return null;
+  }
+}
+
 $('runBtn').addEventListener('click', async () => {
   if (!selectedFile) return;
   $('runBtn').disabled = true;
@@ -446,20 +399,13 @@ $('runBtn').addEventListener('click', async () => {
   extractedDocs = [];
 
   try {
-    log('Loading dependencies…', 'info');
+    log('Loading SQLite and Yjs WASM engines…', 'info');
     await loadScript('https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.js');
     await loadYjs();
-    log('Dependencies ready', 'ok');
+    log('Engines loaded successfully.', 'ok');
 
-    const ext = selectedFile.name.split('.').pop().toLowerCase();
-    if (ext !== 'affine') {
-      log(`Expected a .affine file — got .${ext}`, 'err');
-      return;
-    }
-
-    log(`Reading: ${selectedFile.name} (${(selectedFile.size/1024).toFixed(1)} KB)`, 'info');
     const buf = await selectedFile.arrayBuffer();
-    await processDb(buf);
+    await processAffineDb(buf);
     showResults();
   } catch (err) {
     log(`Fatal error: ${err.message}`, 'err');
@@ -469,267 +415,148 @@ $('runBtn').addEventListener('click', async () => {
   }
 });
 
-// ── Process one SQLite DB ─────────────────────────────────────────────────────
-async function processDb(arrayBuffer, label) {
+async function processAffineDb(arrayBuffer) {
   const SQL = await initSqlJs({
     locateFile: f => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/${f}`
   });
 
   const db = new SQL.Database(new Uint8Array(arrayBuffer));
-
-  // Detect schema
   const tables = db.exec("SELECT name FROM sqlite_master WHERE type='table'")[0]?.values.flat() || [];
-  log(`Tables: ${tables.join(', ')}`, 'default');
+  log(`Detected tables: ${tables.join(', ')}`, 'default');
 
-  let rows = []; // [{id, data: Uint8Array}]
+  const rows = [];
+  const candidateTables = ['snapshots', 'workspace_doc_updates', 'doc_snapshot', 'workspace_docs', 'updates', 'docs'];
+  
+  for (const t of candidateTables) {
+    if (tables.includes(t)) {
+      try {
+        const colInfo = db.exec(`PRAGMA table_info(${t})`)[0]?.values || [];
+        const cols = colInfo.map(r => r[1]);
+        const idCol = cols.find(c => ['doc_id', 'id', 'guid', 'key'].includes(c)) || cols[0];
+        const dataCol = cols.find(c => ['data', 'blob', 'bin', 'doc', 'update'].includes(c)) || cols[1];
 
-  if (tables.includes('doc_snapshot')) {
-    // Newer AFFiNE schema (≥ 0.15)
-    log('Schema: doc_snapshot (newer AFFiNE)', 'info');
-    const res = db.exec('SELECT doc_id, blob FROM doc_snapshot');
-    if (res[0]) {
-      rows = res[0].values.map(([id, data]) => ({ id, data: toUint8Array(data) }));
-    }
-  } else if (tables.includes('snapshots') || tables.includes('updates')) {
-    // Older AFFiNE schema — snapshots hold merged state, updates hold recent deltas
-    log('Schema: updates (older AFFiNE)', 'info');
-
-    // Collect snapshot blobs first (keyed by doc id)
-    const snapshotMap = {};
-    if (tables.includes('snapshots')) {
-      // Introspect actual column names before querying
-      const colInfo = db.exec("PRAGMA table_info(snapshots)");
-      const cols = (colInfo[0]?.values || []).map(r => r[1]);
-      log(`snapshots columns: ${cols.join(', ')}`, 'default');
-
-      const idCol = cols.includes('id') ? 'id' : cols.includes('doc_id') ? 'doc_id' : null;
-      const dataCol = cols.includes('blob') ? 'blob' : cols.includes('data') ? 'data' : null;
-
-      if (idCol && dataCol) {
-        const snapshotRes = db.exec(`SELECT ${idCol}, ${dataCol} FROM snapshots`);
-        if (snapshotRes[0]) {
-          for (const [id, data] of snapshotRes[0].values) {
-            if (id && data) snapshotMap[id] = [toUint8Array(data)];
+        const res = db.exec(`SELECT ${idCol}, ${dataCol} FROM ${t}`);
+        if (res[0]) {
+          for (const [id, data] of res[0].values) {
+            if (data) rows.push({ id: String(id), data: toUint8Array(data) });
           }
-          log(`snapshots: loaded ${snapshotRes[0].values.length} row(s)`, 'ok');
+          log(`Loaded ${res[0].values.length} records from table '${t}'`, 'ok');
+          break;
         }
-      } else {
-        log(`snapshots: unrecognized columns (${cols.join(', ')}), skipping`, 'warn');
-      }
+      } catch (e) {}
     }
+  }
 
-    // Merge incremental updates on top of snapshots
-    if (tables.includes('updates')) {
-      // Introspect updates column names too
-      const colInfo = db.exec("PRAGMA table_info(updates)");
-      const cols = (colInfo[0]?.values || []).map(r => r[1]);
-      log(`updates columns: ${cols.join(', ')}`, 'default');
-
-      const idCol = cols.includes('doc_id') ? 'doc_id' : cols.includes('id') ? 'id' : null;
-      const dataCol = cols.includes('data') ? 'data' : cols.includes('blob') ? 'blob' : null;
-
-      let docIds = [];
-      if (idCol) {
-        try {
-          const r = db.exec(`SELECT DISTINCT ${idCol} FROM updates`);
-          docIds = r[0]?.values.flat() || [];
-        } catch (_) {}
-      }
-      for (const docId of docIds) {
-        if (!idCol || !dataCol) continue;
-        let upRes = null;
-        try {
-          upRes = db.exec(`SELECT ${dataCol} FROM updates WHERE ${idCol} = '${docId.replace(/'/g,"''")}'`);
-        } catch (_) {}
-        const updates = (upRes?.[0]?.values || []).map(([d]) => toUint8Array(d));
-        if (updates.length) {
-          if (!snapshotMap[docId]) snapshotMap[docId] = [];
-          snapshotMap[docId] = snapshotMap[docId].concat(updates);
-        }
-      }
-      log(`updates: merged ${docIds.length} doc id(s)`, 'ok');
-    }
-
-    for (const [docId, updateList] of Object.entries(snapshotMap)) {
-      if (updateList.length) {
-        const merged = mergeYjsUpdates(updateList);
-        rows.push({ id: docId, data: merged });
-      }
-    }
-  } else if (tables.includes('workspace')) {
-    log('Schema: workspace', 'info');
-    const res = db.exec('SELECT id, blob FROM workspace');
-    if (res[0]) {
-      rows = res[0].values.map(([id, data]) => ({ id, data: toUint8Array(data) }));
-    }
-  } else if (tables.includes('blobs')) {
-    log('Schema: blobs', 'info');
-    const res = db.exec('SELECT key, data FROM blobs');
-    if (res[0]) {
-      rows = res[0].values.map(([id, data]) => ({ id, data: toUint8Array(data) }));
-    }
-  } else {
-    log(`Unknown schema. Tables: ${tables.join(', ')}`, 'warn');
-    log('Please open an issue at github with this table list.', 'warn');
+  if (rows.length === 0) {
+    log('No records found in SQLite database.', 'err');
     db.close();
     return;
   }
 
-  log(`Found ${rows.length} document(s)`, 'ok');
+  const Y = window.Y || window.yjs;
 
-  let exported = 0;
-  for (const { id, data } of rows) {
-    const result = extractFromYjs(data);
-    if (!result || result.text.trim().length < 5) continue;
+  // 1. Parse all page documents to build ID -> Document map
+  log('Pass 1: Parsing documents and note titles…', 'info');
+  const pagesMap = new Map();
 
-    const title = (result.docTitle || result.text.split('\n').find(l => l.trim())?.replace(/^#+\s*/, '') || `doc-${id.slice(0,8)}`).slice(0, 80).trim();
-
-    const frontmatter = `---\ndoc_id: ${id}\nsource: ${label || selectedFile.name}\n---\n\n`;
-    extractedDocs.push({ title, content: frontmatter + result.text, docId: id });
-    exported++;
+  for (const row of rows) {
+    if (row.id.startsWith('db$') || row.id.startsWith('affine:') || row.id === 'meta') {
+      continue;
+    }
+    const parsed = parseDocToMarkdown(row.data, Y);
+    if (parsed && parsed.text && parsed.text.trim().length > 0) {
+      pagesMap.set(row.id, parsed);
+    }
   }
 
-  log(`Extracted ${exported} non-empty documents`, exported > 0 ? 'ok' : 'warn');
+  // 2. Decode the Organize folder tree from db$folders
+  log('Pass 2: Reconstructing folder tree from db$folders…', 'info');
+  const folderRow = rows.find(r => r.id === 'db$folders');
+  const folderNodes = new Map(); // folderId -> { id, name, parentId }
+  const docToFolderId = new Map(); // docId -> parentFolderId
+
+  if (folderRow && folderRow.data) {
+    try {
+      const ydoc = new Y.Doc();
+      Y.applyUpdate(ydoc, folderRow.data);
+
+      for (const key of ydoc.share.keys()) {
+        try {
+          const map = ydoc.getMap(key);
+          const node = {};
+          map.forEach((v, k) => {
+            node[k] = (v && typeof v.toJSON === 'function') ? v.toJSON() : v;
+          });
+
+          if (node.$$DELETED) continue;
+
+          const nodeId = node.id || key;
+          const parentId = node.parentId || null;
+          const type = node.type || 'folder';
+          const data = node.data;
+
+          if (type === 'doc' && data) {
+            docToFolderId.set(data, parentId);
+          } else {
+            let folderName = node.name || node.title || (typeof data === 'string' ? data : '');
+            if (!folderName) {
+              const pageDoc = pagesMap.get(nodeId);
+              folderName = pageDoc?.title || `Folder_${nodeId.slice(0, 6)}`;
+            }
+            folderNodes.set(nodeId, {
+              id: nodeId,
+              name: sanitizeName(folderName),
+              parentId
+            });
+          }
+        } catch (e) {}
+      }
+      log(`Identified ${folderNodes.size} folder node(s) in organize tree.`, 'ok');
+    } catch (e) {
+      log(`Error decoding db$folders: ${e.message}`, 'warn');
+    }
+  }
+
+  // Helper to build recursive folder paths
+  function resolveFolderPath(folderId, visited = new Set()) {
+    if (!folderId || visited.has(folderId)) return '';
+    visited.add(folderId);
+
+    const folder = folderNodes.get(folderId);
+    if (!folder) return '';
+
+    const parentPath = folder.parentId ? resolveFolderPath(folder.parentId, visited) : '';
+    return parentPath ? `${parentPath}/${folder.name}` : folder.name;
+  }
+
+  // 3. Package final Markdown notes
+  let count = 0;
+  for (const [docId, page] of pagesMap.entries()) {
+    const folderId = docToFolderId.get(docId);
+    const subfolder = folderId ? resolveFolderPath(folderId) : '';
+
+    const safeTitle = sanitizeName(page.title) || `Note_${docId.slice(0, 8)}`;
+    
+    let frontmatter = '---\n';
+    if (subfolder) frontmatter += `folder: "${subfolder}"\n`;
+    frontmatter += `doc_id: "${docId}"\n---\n\n`;
+
+    extractedDocs.push({
+      title: safeTitle,
+      content: frontmatter + page.text,
+      folderPath: subfolder,
+      docId: docId
+    });
+    count++;
+  }
+
+  log(`Successfully processed ${count} notes.`, 'ok');
   db.close();
 }
 
-// ── Yjs extraction ────────────────────────────────────────────────────────────
-// Matches AFFiNE's Rust parser: reads 'blocks' map, resolves flavour + prop:text/prop:title.
-function extractFromYjs(uint8) {
-  try {
-    const Y = getYjs();
-    if (!Y) return null;
-
-    const doc = new Y.Doc();
-    Y.applyUpdate(doc, uint8);
-
-    const lines = [];
-    let docTitle = '';
-
-    // Primary: traverse blocks map (same structure as Rust parse_doc_from_binary)
-    const blocksMap = doc.getMap('blocks');
-    if (blocksMap.size > 0) {
-      const blocks = [];
-      blocksMap.forEach((block) => {
-        try {
-          if (!(block instanceof Y.Map)) return;
-          const flavour = block.get('sys:flavour') || '';
-          const idx = block.get('sys:index') || block.get('meta:index') || '0';
-
-          // affine:page — title lives in prop:title (Y.Text), not prop:text
-          // Journal pages have prop:journal=true and prop:dateTime (Unix ms timestamp)
-          if (flavour === 'affine:page') {
-            const isJournal = block.get('prop:journal') === true;
-            if (isJournal) {
-              const dateMs = block.get('prop:dateTime');
-              if (dateMs) {
-                const d = new Date(Number(dateMs));
-                const iso = d.toISOString().slice(0, 10); // YYYY-MM-DD
-                docTitle = iso;
-                blocks.push({ flavour, text: iso, idx, isTitle: true });
-              }
-              return;
-            }
-            const titleObj = block.get('prop:title');
-            const title = titleObj instanceof Y.Text
-              ? titleObj.toString().trim()
-              : (typeof titleObj === 'string' ? titleObj.trim() : '');
-            if (title) {
-              docTitle = title;
-              blocks.push({ flavour, text: title, idx, isTitle: true });
-            }
-            return;
-          }
-
-          // affine:paragraph / affine:list / affine:code — text in prop:text
-          if (flavour === 'affine:paragraph' || flavour === 'affine:list' || flavour === 'affine:code') {
-            const textObj = block.get('prop:text');
-            const text = textObj instanceof Y.Text ? textObj.toString().trim() : '';
-            if (text) {
-              // paragraph sub-type: h1/h2/h3 stored in prop:type
-              const propType = block.get('prop:type') || '';
-              blocks.push({ flavour, text, idx, propType });
-            }
-          }
-        } catch (_) {}
-      });
-
-      blocks.sort((a, b) => String(a.idx).localeCompare(String(b.idx)));
-
-      for (const { flavour, text, isTitle, propType } of blocks) {
-        if (isTitle) {
-          lines.push(`# ${text}`);
-        } else if (flavour === 'affine:code') {
-          lines.push('```\n' + text + '\n```');
-        } else if (propType === 'h1') {
-          lines.push(`## ${text}`);
-        } else if (propType === 'h2') {
-          lines.push(`### ${text}`);
-        } else if (propType === 'h3') {
-          lines.push(`#### ${text}`);
-        } else {
-          lines.push(text);
-        }
-      }
-    }
-
-    // Fallback: scan all shared types for any Y.Text content
-    if (lines.length === 0) {
-      doc.share.forEach((type) => {
-        if (type instanceof Y.Text) {
-          const t = type.toString().trim();
-          if (t) lines.push(t);
-        } else if (type instanceof Y.Map) {
-          type.forEach((v) => {
-            if (v instanceof Y.Text) {
-              const t = v.toString().trim();
-              if (t) lines.push(t);
-            }
-          });
-        }
-      });
-    }
-
-    if (lines.length === 0) return null;
-    return { text: lines.join('\n\n'), docTitle };
-  } catch (_) {
-    return null;
-  }
-}
-
-// ── Yjs merge ─────────────────────────────────────────────────────────────────
-function mergeYjsUpdates(updates) {
-  try {
-    const Y = getYjs();
-    const doc = new Y.Doc();
-    for (const u of updates) {
-      try { Y.applyUpdate(doc, u); } catch (_) {}
-    }
-    return Y.encodeStateAsUpdate(doc);
-  } catch (_) {
-    return updates[0] || new Uint8Array();
-  }
-}
-
-// ── Get Yjs from various UMD attachment points ─────────────────────────────────
-function getYjs() {
-  // yjs UMD exposes as window.Y or window.yjs
-  return window.Y || window.yjs || null;
-}
-
-// ── Helper: normalize sql.js blob to Uint8Array ───────────────────────────────
-function toUint8Array(val) {
-  if (val instanceof Uint8Array) return val;
-  if (val instanceof ArrayBuffer) return new Uint8Array(val);
-  if (Array.isArray(val)) return new Uint8Array(val);
-  // sql.js sometimes returns the blob as a regular JS array or typed array
-  return new Uint8Array(val);
-}
-
-// ── Show results ──────────────────────────────────────────────────────────────
 function showResults() {
   if (extractedDocs.length === 0) {
-    log('No readable text documents found. The workspace may be empty or use an unrecognized schema.', 'warn');
+    log('No notes found in this backup.', 'warn');
     return;
   }
 
@@ -737,11 +564,12 @@ function showResults() {
   card.classList.add('visible');
 
   const totalChars = extractedDocs.reduce((s, d) => s + d.content.length, 0);
+  const foldersCount = new Set(extractedDocs.map(d => d.folderPath).filter(Boolean)).size;
 
   $('statRow').innerHTML = `
     <div class="stat"><div class="n">${extractedDocs.length}</div><div class="label">Notes</div></div>
-    <div class="stat"><div class="n">${Math.round(totalChars/1024)}k</div><div class="label">Characters</div></div>
-    <div class="stat"><div class="n">MD</div><div class="label">Format</div></div>
+    <div class="stat"><div class="n">${foldersCount}</div><div class="label">Folders</div></div>
+    <div class="stat"><div class="n">${Math.round(totalChars/1024)}k</div><div class="label">Chars</div></div>
   `;
 
   const list = $('docList');
@@ -750,106 +578,97 @@ function showResults() {
     const item = document.createElement('div');
     item.className = 'doc-item';
     item.innerHTML = `
-      <span class="doc-title">${escHtml(doc.title)}</span>
+      <div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+        ${doc.folderPath ? `<span class="doc-item-folder">📁 ${escHtml(doc.folderPath)}</span>` : ''}
+        <span class="doc-item-title">${escHtml(doc.title)}.md</span>
+      </div>
       <span class="doc-chars">${doc.content.length} chars</span>
-      <span class="doc-dl">⬇ .md</span>
     `;
-    item.addEventListener('click', () => downloadOne(doc));
     list.appendChild(item);
   }
-
-  log(`Ready. ${extractedDocs.length} notes available for download.`, 'ok');
 }
 
-// ── Download helpers ──────────────────────────────────────────────────────────
-function sanitize(name) {
-  return name.replace(/[^a-zA-Z0-9 \-_.]/g, '_').slice(0, 80).trim() || 'note';
-}
-
-function downloadOne(doc) {
-  const blob = new Blob([doc.content], { type: 'text/markdown' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = sanitize(doc.title) + '.md';
-  a.click();
-  URL.revokeObjectURL(a.href);
-}
-
+// ── Path-aware zero-dependency ZIP Builder ─────────────────────────────────────
 $('dlAllBtn').addEventListener('click', async () => {
   if (extractedDocs.length === 0) return;
   $('dlAllBtn').disabled = true;
-  $('dlAllBtn').textContent = 'Packaging…';
+  $('dlAllBtn').textContent = 'Creating Vault ZIP…';
 
-  const blob = buildZip(extractedDocs);
+  const blob = buildZipWithFolders(extractedDocs);
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = 'affine-notes.zip';
+  a.download = 'obsidian-vault.zip';
   a.click();
   URL.revokeObjectURL(a.href);
 
   $('dlAllBtn').disabled = false;
-  $('dlAllBtn').textContent = '⬇ Download All as ZIP';
+  $('dlAllBtn').textContent = '⬇ Download Obsidian Vault (.zip)';
 });
 
-// ── Minimal ZIP builder (no dependencies) ─────────────────────────────────────
-// Produces a valid ZIP with stored (uncompressed) entries — plenty for text files.
-function buildZip(docs) {
+function buildZipWithFolders(docs) {
   const enc = new TextEncoder();
   const parts = [];
   const centralDir = [];
   let offset = 0;
-  const usedNames = {};
+  const usedPaths = {};
 
   for (const doc of docs) {
-    let base = sanitize(doc.title);
-    if (usedNames[base] !== undefined) { usedNames[base]++; base += `_${usedNames[base]}`; }
-    else usedNames[base] = 0;
-    const filename = base + '.md';
-    const filenameBytes = enc.encode(filename);
+    let base = sanitizeName(doc.title);
+    let fullPath = doc.folderPath ? `${doc.folderPath}/${base}.md` : `${base}.md`;
+
+    if (usedPaths[fullPath] !== undefined) {
+      usedPaths[fullPath]++;
+      base += `_${usedPaths[fullPath]}`;
+      fullPath = doc.folderPath ? `${doc.folderPath}/${base}.md` : `${base}.md`;
+    } else {
+      usedPaths[fullPath] = 0;
+    }
+
+    const pathBytes = enc.encode(fullPath);
     const data = enc.encode(doc.content);
     const crc = crc32(data);
     const now = dosDateTime();
 
-    // Local file header
-    const localHeader = new DataView(new ArrayBuffer(30 + filenameBytes.length));
-    localHeader.setUint32(0,  0x04034b50, true); // signature
-    localHeader.setUint16(4,  20, true);          // version needed
-    localHeader.setUint16(6,  0, true);           // flags
-    localHeader.setUint16(8,  0, true);           // compression: stored
+    // Local Header
+    const localHeader = new DataView(new ArrayBuffer(30 + pathBytes.length));
+    localHeader.setUint32(0,  0x04034b50, true);
+    localHeader.setUint16(4,  20, true);
+    localHeader.setUint16(6,  0, true);
+    localHeader.setUint16(8,  0, true);
     localHeader.setUint16(10, now.time, true);
     localHeader.setUint16(12, now.date, true);
     localHeader.setUint32(14, crc, true);
-    localHeader.setUint32(18, data.length, true); // compressed size
-    localHeader.setUint32(22, data.length, true); // uncompressed size
-    localHeader.setUint16(26, filenameBytes.length, true);
-    localHeader.setUint16(28, 0, true);           // extra length
-    new Uint8Array(localHeader.buffer).set(filenameBytes, 30);
+    localHeader.setUint32(18, data.length, true);
+    localHeader.setUint32(22, data.length, true);
+    localHeader.setUint16(26, pathBytes.length, true);
+    localHeader.setUint16(28, 0, true);
+    new Uint8Array(localHeader.buffer).set(pathBytes, 30);
 
     parts.push(new Uint8Array(localHeader.buffer), data);
 
-    // Central directory entry
-    const cdEntry = new DataView(new ArrayBuffer(46 + filenameBytes.length));
-    cdEntry.setUint32(0,  0x02014b50, true); // signature
-    cdEntry.setUint16(4,  20, true);          // version made by
-    cdEntry.setUint16(6,  20, true);          // version needed
+    // Central Directory Entry
+    const cdEntry = new DataView(new ArrayBuffer(46 + pathBytes.length));
+    cdEntry.setUint32(0,  0x02014b50, true);
+    cdEntry.setUint16(4,  20, true);
+    cdEntry.setUint16(6,  20, true);
     cdEntry.setUint16(8,  0, true);
-    cdEntry.setUint16(10, 0, true);           // stored
+    cdEntry.setUint16(10, 0, true);
     cdEntry.setUint16(12, now.time, true);
     cdEntry.setUint16(14, now.date, true);
     cdEntry.setUint32(16, crc, true);
     cdEntry.setUint32(20, data.length, true);
     cdEntry.setUint32(24, data.length, true);
-    cdEntry.setUint16(28, filenameBytes.length, true);
-    cdEntry.setUint16(30, 0, true); // extra
-    cdEntry.setUint16(32, 0, true); // comment
-    cdEntry.setUint16(34, 0, true); // disk start
-    cdEntry.setUint16(36, 0, true); // internal attr
-    cdEntry.setUint32(38, 0, true); // external attr
-    cdEntry.setUint32(42, offset, true); // local header offset
-    new Uint8Array(cdEntry.buffer).set(filenameBytes, 46);
+    cdEntry.setUint16(28, pathBytes.length, true);
+    cdEntry.setUint16(30, 0, true);
+    cdEntry.setUint16(32, 0, true);
+    cdEntry.setUint16(34, 0, true);
+    cdEntry.setUint16(36, 0, true);
+    cdEntry.setUint32(38, 0, true);
+    cdEntry.setUint32(42, offset, true);
+    new Uint8Array(cdEntry.buffer).set(pathBytes, 46);
     centralDir.push(new Uint8Array(cdEntry.buffer));
 
-    offset += 30 + filenameBytes.length + data.length;
+    offset += 30 + pathBytes.length + data.length;
   }
 
   const cdSize = centralDir.reduce((s, b) => s + b.length, 0);
