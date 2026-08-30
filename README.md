@@ -1,6 +1,6 @@
 # AFFiNE Exporter
 
-A single-file browser tool that extracts notes from an AFFiNE `.affine` backup and downloads them as Markdown files.
+A single-file browser tool that extracts notes from an AFFiNE `.affine` backup and downloads them as Markdown files. This fork also reads the AFFiNE folder structure from the backup and recreates the directory tree containing the Markdown files.
 
 **Live:** https://devin-liu.github.io/affine-exporter/
 
